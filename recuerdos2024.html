@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Especifica que el documento utiliza HTML5 -->
+    <meta charset="UTF-8">
+    <!-- Define la codificación de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Configura el diseño para ser responsivo -->
+    <title>Recuerdos Navideños</title>
+    <!-- Título de la página -->
+
+    <style>
+        /* Importa la fuente Poppins desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        /* Estilos globales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Incluye bordes y relleno en el cálculo de ancho/alto */
+            font-family: "Poppins", serif; /* Aplica la fuente Poppins */
+        }
+
+        /* Estilo del cuerpo */
+        body {
+            min-height: 100vh; /* Altura mínima de la pantalla */
+            background: #1a1f29; /* Color de fondo base */
+            background-image: /* Gradientes radiales para efectos decorativos */
+                radial-gradient(circle at 20% 20%, rgba(231, 76, 60, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(46, 204, 113, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 50% 50%, rgba(231, 76, 60, 0.1) 0%, transparent 50%);
+            color: #fff; /* Texto blanco */
+            display: flex; /* Diseño flexible */
+            flex-direction: column; /* Dirección de los elementos en columna */
+            align-items: center; /* Alineación centrada horizontalmente */
+            padding: 2rem; /* Espaciado interno */
+            position: relative; /* Posición relativa para elementos hijos */
+            overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+        }
+
+        /* Decoraciones animadas */
+        .decoration {
+            position: fixed; /* Posición fija en la pantalla */
+            font-size: 2rem; /* Tamaño del texto decorativo */
+            opacity: 0.50; /* Transparencia parcial */
+            z-index: 0; /* Detrás del contenido principal */
+            pointer-events: none; /* No interactuables */
+        }
+
+        /* Animación flotante */
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg); /* Posición inicial */
+                opacity: 0; /* Invisible al inicio */
+            }
+            10% {
+                opacity: 0.5; /* Aparece gradualmente */
+            }
+            90% {
+                opacity: 0.5; /* Permanece visible */
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg); /* Sube y rota */
+                opacity: 0; /* Se desvanece */
+            }
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px; /* Ancho máximo */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            margin: 0 auto; /* Centrado horizontal */
+            min-height: 100vh; /* Altura mínima igual a la pantalla */
+            padding: 2rem; /* Espaciado interno */
+            position: relative; /* Posición relativa para elementos internos */
+            z-index: 1; /* Encima de las decoraciones */
+            display: flex; /* Diseño flexible */
+            flex-direction: column; /* Dirección en columna */
+        }
+
+        /* Título principal */
+        .title {
+            font-size: 2.5rem; /* Tamaño de fuente grande */
+            font-weight: 800; /* Fuente en negrita */
+            margin: 1rem 0; /* Margen superior e inferior */
+            text-align: center; /* Centrado */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra de texto ligera */
+        }
+
+        /* Diseño de cuadrícula para fotos */
+        .photo-grid {
+            display: grid; /* Uso de cuadrícula */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Columnas adaptativas */
+            gap: 2rem; /* Espaciado entre elementos */
+            flex-grow: 1; /* Crece para llenar el espacio disponible */
+            margin: 2rem 0; /* Margen superior e inferior */
+        }
+
+        /* Contenedor de cada foto */
+        .photo-container {
+            position: relative; /* Posición relativa para elementos internos */
+            aspect-ratio: 1; /* Proporción 1:1 (cuadrado) */
+            background: rgba(255, 255, 255, 0.05); /* Fondo semitransparente */
+            backdrop-filter: blur(10px); /* Desenfoque del fondo */
+            border-radius: 1rem; /* Bordes redondeados */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Borde tenue */
+            overflow: hidden; /* Oculta contenido que se desborda */
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Animación suave */
+        }
+
+        /* Efecto al pasar el mouse sobre la foto */
+        .photo-container:hover {
+            transform: translateY(-10px) scale(1.02); /* Eleva y escala ligeramente */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Sombra más intensa */
+        }
+
+        /* Gradiente decorativo al pasar el mouse */
+        .photo-container::before {
+            content: ''; /* Elemento vacío para el efecto */
+            position: absolute; /* Posición absoluta dentro del contenedor */
+            inset: 0; /* Ocupa todo el espacio */
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(46, 204, 113, 0.2)); /* Gradiente */
+            opacity: 0; /* Invisible por defecto */
+            transition: opacity 0.3s ease; /* Transición suave */
+            z-index: 1; /* Encima de la imagen */
+        }
+
+        .photo-container:hover::before {
+            opacity: 1; /* Aparece al pasar el mouse */
+        }
+
+        /* Imagen dentro del contenedor */
+        .photo {
+            width: 100%; /* Ocupa todo el ancho */
+            height: 100%; /* Ocupa toda la altura */
+            object-fit: cover; /* Escala la imagen manteniendo proporciones */
+        }
+
+        /* Pie de página */
+        .footer {
+            text-align: center; /* Centrado */
+            font-size: 1.2rem; /* Tamaño de fuente moderado */
+            margin-top: auto; /* Empuja hacia la parte inferior */
+            padding: 1rem; /* Espaciado interno */
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Contenedor para decoraciones animadas -->
+    <div class="decorations-container"></div>
+
+    <!-- Contenedor principal de la página -->
+    <div class="container">
+        <h1 class="title">✨ Recuerdos 2024 ✨</h1> <!-- Título principal -->
+
+        <!-- Cuadrícula de fotos -->
+        <div class="photo-grid">
+            <!-- Cada contenedor de foto -->
+            <div class="photo-container">
+                <img src="https://via.placeholder.com/400" class="photo"> 
+            </div>
+            <div class="photo-container">
+                <img src="https://via.placeholder.com/400" class="photo">
+            </div>
+            <div class="photo-container">
+                <img src="https://via.placeholder.com/400" class="photo">
+            </div>
+            <div class="photo-container">
+                <img src="https://via.placeholder.com/400" class="photo">
+            </div>
+            
+        </div>
+
+        <!-- Pie de página -->
+        <div class="footer">Felices Fiestas 🎉</div>
+    </div>
+
+    <script>
+        // Función para crear decoraciones animadas
+        function createDecorations() {
+            // Selecciona el contenedor donde se añadirán las decoraciones
+            const container = document.querySelector('.decorations-container');
+
+            // Lista de decoraciones en forma de emojis
+            const decorations = [
+                "🎄", "🎅", "🤶", "🎁", "🎉", "🍾", "🥂", "🎆", "🎇", "🍽️", "🌟", "🕯️", "🕛", "⏳", 
+                "📚", "🎓", "🎶", "📖", "🏆", "🏫", "✨", "💫", "🌈", "📝", "🎯", "🎊", "🤩", "🌍", "💖", 
+                "🎯", "🍷", "💌", "🧑‍🤝‍🧑", "🎶"];
+
+            // Número total de decoraciones a generar
+            const numDecorations = 50;
+
+            // Función para crear una única decoración
+            function createDecoration() {
+                // Crea un nuevo elemento div para la decoración
+                const decoration = document.createElement('div');
+
+                // Añade la clase "decoration" al elemento para aplicar estilos
+                decoration.className = 'decoration';
+
+                // Selecciona un emoji aleatorio de la lista de decoraciones
+                decoration.textContent = decorations[Math.floor(Math.random() * decorations.length)];
+
+                // Posición inicial aleatoria en el ancho de la ventana
+                decoration.style.left = `${Math.random() * 100}vw`;
+
+                // Posición inicial fuera de la pantalla, en la parte inferior
+                decoration.style.bottom = '-50px';
+
+                // Define una duración aleatoria para la animación entre 15 y 25 segundos
+                const duration = 15 + Math.random() * 10;
+
+                // Configura la animación flotante con duración y retraso aleatorios
+                decoration.style.animation = `float ${duration}s linear ${Math.random() * 10}s infinite`;
+
+                // Añade el elemento decorativo al contenedor
+                container.appendChild(decoration);
+            }
+
+            // Bucle para crear el número especificado de decoraciones
+            for (let i = 0; i < numDecorations; i++) {
+                createDecoration(); // Llama a la función para crear cada decoración
+            }
+        }
+
+        // Añade un evento al cargar la ventana para iniciar las decoraciones
+        window.addEventListener('load', () => {
+            createDecorations(); // Llama a la función principal al cargar la página
+        });
+
+    </script>
+</body>
+
+</html>
